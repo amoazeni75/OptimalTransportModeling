@@ -104,7 +104,7 @@ test_every = 1000  # save transport samples
 test_inception_every = 5000  # compute FID stats
 # test_inception_every = 1
 
-num_inception_imgs = 50000  # number of images used to compute FID
+num_inception_imgs = 300  # number of images used to compute FID
 
 sigma = 0.3  # noise standard deviation
 
