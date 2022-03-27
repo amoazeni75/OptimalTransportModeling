@@ -85,7 +85,7 @@ num_workers = 10  # Used in data loader
 devices = [0]
 
 ## Training parameters
-BATCH_SIZE = 256  # Batch size
+BATCH_SIZE = 64  # Batch size
 K_G = 5
 K_psi = 1
 lam_go = 0
@@ -250,11 +250,11 @@ class TransportMap(torch.nn.Module):
         return op
 
 
-print('=' * 256)
+print('=' * 64)
 print('Ki Architecture: \n')
 G = TransportMap().to(device)
 summary(G, (channels, size, size))
-print('=' * 256)
+print('=' * 64)
 
 
 # sys.exit()
@@ -286,6 +286,7 @@ class Psi(torch.nn.Module):
             nn.AvgPool2d(kernel_size=3, stride=2, padding=1)
         ])
 
+        # self.op = nn.Linear(in_features=features * 16 * 16, out_features=1)
         self.op = nn.Linear(in_features=features * 4 * 4, out_features=1)
 
     def _compute_cond_module(self, module, x):
@@ -300,15 +301,16 @@ class Psi(torch.nn.Module):
         x = self._compute_cond_module(self.down4, x)
 
         x = x.view(x.shape[0], -1)
+        print("X: ", x.shape)
         op = self.op(x)
         return op
 
 
-print('=' * 256)
+print('=' * 64)
 print('Psi Architecture: \n')
 psi = Psi().to(device)
 summary(psi, (channels, size, size))
-print('=' * 256)
+print('=' * 64)
 
 # sys.exit()
 
