@@ -30,7 +30,7 @@ from torch.autograd import Variable
 ##########################################################
 ## Hyper-parameters
 ##########################################################
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 SEED = 9999
 torch.manual_seed(SEED)
