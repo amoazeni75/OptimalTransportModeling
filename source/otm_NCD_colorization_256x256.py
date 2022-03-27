@@ -301,7 +301,7 @@ class Psi(torch.nn.Module):
         x = self._compute_cond_module(self.down4, x)
 
         x = x.view(x.shape[0], -1)
-        print("X: ", x.shape)
+        # print("X: ", x.shape)
         op = self.op(x)
         return op
 
