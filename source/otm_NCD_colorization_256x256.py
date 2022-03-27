@@ -121,9 +121,9 @@ transform = transforms.Compose([
 ])
 
 train_dataA = datasets.ImageFolder(path + 'trainA', transform=transform)
-train_dataB = datasets.ImageFolder(path + 'trainB/', transform=transform)
+train_dataB = datasets.ImageFolder(path + 'trainB', transform=transform)
 
-test_data = datasets.ImageFolder(path + 'test/', transform=transform)
+test_data = datasets.ImageFolder(path + 'test', transform=transform)
 print('Train dataA: ', len(train_dataA), 'Train dataB: ', len(train_dataB), 'Test data: ', len(test_data))
 
 train_loaderA = torch.utils.data.DataLoader(train_dataA, batch_size=BATCH_SIZE, num_workers=num_workers, shuffle=True,
