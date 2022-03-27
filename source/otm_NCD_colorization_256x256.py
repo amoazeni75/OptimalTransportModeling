@@ -35,9 +35,11 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 SEED = 9999
 torch.manual_seed(SEED)
 
-path_A = "/home/samp8/projects/datasets/NCD_TrainA/"
-path_B = "/home/samp8/projects/datasets/NCD_TrainB/"
-test_path = "/home/samp8/projects/datasets/NCD_Test_Ground_Truth_256_60/"
+# path_A = "/home/samp8/projects/datasets/NCD_TrainA/"
+# path_B = "/home/samp8/projects/datasets/NCD_TrainB/"
+# test_path = "/home/samp8/projects/datasets/NCD_Test_Ground_Truth_256_60/"
+
+path = "/home/samp8/projects/datasets/NCD_OTM/"
 output_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_images/'
 pretrain_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_checkpoints/'
 inception_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_inception/'
@@ -118,10 +120,10 @@ transform = transforms.Compose([
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ])
 
-train_dataA = datasets.ImageFolder(path_A, transform=transform)
-train_dataB = datasets.ImageFolder(path_B + 'trainB', transform=transform)
+train_dataA = datasets.ImageFolder(path + 'trainA', transform=transform)
+train_dataB = datasets.ImageFolder(path + 'trainB', transform=transform)
 
-test_data = datasets.ImageFolder(test_path + 'test', transform=transform)
+test_data = datasets.ImageFolder(path + 'test', transform=transform)
 print('Train dataA: ', len(train_dataA), 'Train dataB: ', len(train_dataB), 'Test data: ', len(test_data))
 
 train_loaderA = torch.utils.data.DataLoader(train_dataA, batch_size=BATCH_SIZE, num_workers=num_workers, shuffle=True,
