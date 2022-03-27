@@ -286,8 +286,8 @@ class Psi(torch.nn.Module):
             nn.AvgPool2d(kernel_size=3, stride=2, padding=1)
         ])
 
-        # self.op = nn.Linear(in_features=features * 16 * 16, out_features=1)
-        self.op = nn.Linear(in_features=features * 4 * 4, out_features=1)
+        self.op = nn.Linear(in_features=features * 16 * 16, out_features=1)
+        # self.op = nn.Linear(in_features=features * 4 * 4, out_features=1)
 
     def _compute_cond_module(self, module, x):
         for m in module:
