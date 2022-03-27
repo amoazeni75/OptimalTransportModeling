@@ -85,7 +85,7 @@ num_workers = 10  # Used in data loader
 devices = [0]
 
 ## Training parameters
-BATCH_SIZE = 64  # Batch size
+BATCH_SIZE = 256  # Batch size
 K_G = 5
 K_psi = 1
 lam_go = 0
@@ -250,11 +250,11 @@ class TransportMap(torch.nn.Module):
         return op
 
 
-print('=' * 64)
+print('=' * 256)
 print('Ki Architecture: \n')
 G = TransportMap().to(device)
 summary(G, (channels, size, size))
-print('=' * 64)
+print('=' * 256)
 
 
 # sys.exit()
@@ -304,11 +304,11 @@ class Psi(torch.nn.Module):
         return op
 
 
-print('=' * 64)
+print('=' * 256)
 print('Psi Architecture: \n')
 psi = Psi().to(device)
 summary(psi, (channels, size, size))
-print('=' * 64)
+print('=' * 256)
 
 # sys.exit()
 
