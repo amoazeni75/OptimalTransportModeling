@@ -25,7 +25,7 @@ from torchvision.utils import save_image
 from torch.autograd import Variable
 
 ##########################################################
-# from src.plotters import plot_noise_interp_unequal, plot_inv_noise_interp_unequal
+from src.plotters import plot_noise_interp_unequal, plot_inv_noise_interp_unequal
 
 ##########################################################
 ## Hyper-parameters
@@ -433,10 +433,10 @@ if train_model:
     ##########################################################
     # Define placeholders 
     ##########################################################
-    # n = 20
-    # Y_fixed, _ = next(train_loader_iteratorB)
-    # Y_fixed = Y_fixed[:n].to(device)
-    # X_fixed = Degrade(Y_fixed.clone().detach())
+    n = 20
+    Y_fixed, _ = next(train_loader_iteratorB)
+    Y_fixed = Y_fixed[:n].to(device)
+    X_fixed = Degrade(Y_fixed.clone().detach())
 
     G_opt = torch.optim.Adam(G.parameters(), lr=lr_G, betas=(beta1G, beta2G))
     psi_opt = torch.optim.Adam(psi.parameters(), lr=lr_psi, betas=(beta1D, beta2D))
@@ -541,13 +541,13 @@ if train_model:
                 print("Epoch: ", epoch, "|", T, "\t psi loss: ", np.round(psi_l[-1], 3), "\t GO loss: ",
                       np.round(go_loss.item(), 3), "\t G loss: ", np.round(G_l[-1], 2))
 
-                # fig, axes = plot_noise_interp_unequal(G, Q, X_fixed, Y_fixed, INV_TRANSFORM, show=False)
-                # fig.savefig(output_path + 'OTM_samples.pdf', bbox_inches='tight')
-                # plt.close(fig)
-                #
-                # fig, axes = plot_inv_noise_interp_unequal(G, psi, Q, X_fixed, Y_fixed, INV_TRANSFORM, show=False)
-                # fig.savefig(output_path + 'OTM_inv_samples.pdf', bbox_inches='tight')
-                # plt.close(fig)
+                fig, axes = plot_noise_interp_unequal(G, Q, X_fixed, Y_fixed, INV_TRANSFORM, show=False)
+                fig.savefig(output_path + 'OTM_samples.pdf', bbox_inches='tight')
+                plt.close(fig)
+
+                fig, axes = plot_inv_noise_interp_unequal(G, psi, Q, X_fixed, Y_fixed, INV_TRANSFORM, show=False)
+                fig.savefig(output_path + 'OTM_inv_samples.pdf', bbox_inches='tight')
+                plt.close(fig)
 
                 if t <= test_every:
                     train_loader_iteratorB = Test(t, G, train_loader_iteratorB)
