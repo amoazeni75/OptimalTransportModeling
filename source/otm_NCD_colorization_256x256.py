@@ -84,6 +84,8 @@ inference = args.inference  # Run inference engine
 
 ##########################################################
 size = 256  # Size of each image, [size,size]
+crop_size = 64
+random_crop = True
 channels = 3  # Number of channels, [channels,size,size]
 
 num_workers = 10  # Used in data loader
@@ -431,11 +433,10 @@ if train_model:
     ##########################################################
     # Define placeholders 
     ##########################################################
-    n = 20
-
-    Y_fixed, _ = next(train_loader_iteratorB)
-    Y_fixed = Y_fixed[:n].to(device)
-    X_fixed = Degrade(Y_fixed.clone().detach())
+    # n = 20
+    # Y_fixed, _ = next(train_loader_iteratorB)
+    # Y_fixed = Y_fixed[:n].to(device)
+    # X_fixed = Degrade(Y_fixed.clone().detach())
 
     G_opt = torch.optim.Adam(G.parameters(), lr=lr_G, betas=(beta1G, beta2G))
     psi_opt = torch.optim.Adam(psi.parameters(), lr=lr_psi, betas=(beta1D, beta2D))
@@ -492,8 +493,8 @@ if train_model:
                 go_loss = GradientOptimality(psi, G, Q, X)
                 go_l_.append(go_loss.item())
                 psi_loss = psi_loss + lam_go * go_loss
-                psi_opt.zero_grad();
-                psi_loss.backward(retain_graph=True);
+                psi_opt.zero_grad()
+                psi_loss.backward(retain_graph=True)
                 psi_opt.step()
 
             psi_l.append(np.asarray(psi_l_).mean())
