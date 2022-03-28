@@ -34,7 +34,6 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 SEED = 9999
 torch.manual_seed(SEED)
-
 # path_A = "/home/samp8/projects/datasets/NCD_TrainA/"
 # path_B = "/home/samp8/projects/datasets/NCD_TrainB/"
 # test_path = "/home/samp8/projects/datasets/NCD_Test_Ground_Truth_256_60/"
@@ -48,6 +47,7 @@ inception_path = '/home/samp8/scratch/OTM/NCD/NCD_colorization_256x256_inception
 # output_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_images/'
 # pretrain_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_checkpoints/'
 # inception_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_inception/'
+
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 cuda = True if torch.cuda.is_available() else False
@@ -83,9 +83,7 @@ restore_model = args.restore  # Restart training from init_iter checkpoint
 inference = args.inference  # Run inference engine
 
 ##########################################################
-size = 256  # Size of each image, [size,size]
-crop_size = 64
-random_crop = True
+size = 64  # Size of each image, [size,size]
 channels = 3  # Number of channels, [channels,size,size]
 
 num_workers = 10  # Used in data loader
@@ -113,7 +111,7 @@ test_every = 1000  # save transport samples
 test_inception_every = 5000  # compute FID stats
 # test_inception_every = 1
 
-num_inception_imgs = 300  # number of images used to compute FID
+num_inception_imgs = 50000  # number of images used to compute FID
 
 sigma = 0.3  # noise standard deviation
 
@@ -293,8 +291,7 @@ class Psi(torch.nn.Module):
             nn.AvgPool2d(kernel_size=3, stride=2, padding=1)
         ])
 
-        self.op = nn.Linear(in_features=features * 16 * 16, out_features=1)
-        # self.op = nn.Linear(in_features=features * 4 * 4, out_features=1)
+        self.op = nn.Linear(in_features=features * 4 * 4, out_features=1)
 
     def _compute_cond_module(self, module, x):
         for m in module:
@@ -308,7 +305,6 @@ class Psi(torch.nn.Module):
         x = self._compute_cond_module(self.down4, x)
 
         x = x.view(x.shape[0], -1)
-        # print("X: ", x.shape)
         op = self.op(x)
         return op
 
@@ -390,13 +386,9 @@ def Test(iteration, G, test_loader_iterator):
     x = Degrade(x)
     Gx = G(x)
 
-    x = INV_TRANSFORM(x)[:256]
-    Gx = INV_TRANSFORM(Gx)[:256]
-    y = INV_TRANSFORM(y)[:256]
-
-    # x = INV_TRANSFORM(x)[:64]
-    # Gx = INV_TRANSFORM(Gx)[:64]
-    # y = INV_TRANSFORM(y)[:64]
+    x = INV_TRANSFORM(x)[:64]
+    Gx = INV_TRANSFORM(Gx)[:64]
+    y = INV_TRANSFORM(y)[:64]
 
     save_image(Gx.view(Gx.shape[0], channels, size, size),
                output_path + 'fake_sample_iteration_' + str(iteration) + '.png', nrow=8, normalize=True)
@@ -431,9 +423,10 @@ if train_model:
         psi = LoadModel(psi, 'otm_psi_it_' + str(init_iter))
 
     ##########################################################
-    # Define placeholders 
+    # Define placeholders
     ##########################################################
     n = 20
+
     Y_fixed, _ = next(train_loader_iteratorB)
     Y_fixed = Y_fixed[:n].to(device)
     X_fixed = Degrade(Y_fixed.clone().detach())
@@ -460,7 +453,7 @@ if train_model:
 
             ##########################################################
             ## Outer minimization loop
-            ##########################################################       
+            ##########################################################
             ## Fix G and update psi to compute infimum.
             for param in psi.parameters():
                 param.requires_grad = True
@@ -493,8 +486,8 @@ if train_model:
                 go_loss = GradientOptimality(psi, G, Q, X)
                 go_l_.append(go_loss.item())
                 psi_loss = psi_loss + lam_go * go_loss
-                psi_opt.zero_grad()
-                psi_loss.backward(retain_graph=True)
+                psi_opt.zero_grad();
+                psi_loss.backward(retain_graph=True);
                 psi_opt.step()
 
             psi_l.append(np.asarray(psi_l_).mean())
@@ -561,7 +554,7 @@ if train_model:
 
             ##########################################################
             ## Generate transported samples for inception and FID
-            ##########################################################    
+            ##########################################################
             if t % test_inception_every == 0:
                 images = []
                 for _ in tqdm(range((num_inception_imgs // BATCH_SIZE) + 1)):
@@ -629,28 +622,19 @@ if train_model:
 
     G_X = G(X)
 
-    X = INV_TRANSFORM(X)[:256]
-    G_X = INV_TRANSFORM(G_X)[:256]
-    Y = INV_TRANSFORM(Y)[:256]
-
-    # X = INV_TRANSFORM(X)[:64]
-    # G_X = INV_TRANSFORM(G_X)[:64]
-    # Y = INV_TRANSFORM(Y)[:64]
+    X = INV_TRANSFORM(X)[:64]
+    G_X = INV_TRANSFORM(G_X)[:64]
+    Y = INV_TRANSFORM(Y)[:64]
 
     save_image(G_X.view(n, channels, size, size), output_path + 'fake_sample_extnd_epoch_' + str(epoch) + '.pdf',
                nrow=8, normalize=True)
     print('Extended fake sample saved successfully!!!')
 
-    # save_image(Y.view(64, channels, size, size), output_path + 'inpaint_sample_extnd_epoch_' + str(epoch) + '.pdf',
-    #            nrow=8, normalize=True)
-    save_image(Y.view(256, channels, size, size), output_path + 'inpaint_sample_extnd_epoch_' + str(epoch) + '.pdf',
+    save_image(Y.view(64, channels, size, size), output_path + 'inpaint_sample_extnd_epoch_' + str(epoch) + '.pdf',
                nrow=8, normalize=True)
     print('Extended inpainting sample saved successfully!!!')
 
-    # save_image(X.view(64, channels, size, size), output_path + 'real_sample_extnd_epoch_' + str(epoch) + '.pdf', nrow=8,
-    #            normalize=True)
-    save_image(X.view(256, channels, size, size), output_path + 'real_sample_extnd_epoch_' + str(epoch) + '.pdf',
-               nrow=8,
+    save_image(X.view(64, channels, size, size), output_path + 'real_sample_extnd_epoch_' + str(epoch) + '.pdf', nrow=8,
                normalize=True)
     print('Extended real sample saved successfully!!!')
 
