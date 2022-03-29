@@ -86,7 +86,7 @@ num_workers = 10  # Used in data loader
 devices = [0]
 
 ## Training parameters
-BATCH_SIZE = 64  # Batch size
+BATCH_SIZE = 60  # Batch size
 K_G = 5
 K_psi = 1
 lam_go = 0
