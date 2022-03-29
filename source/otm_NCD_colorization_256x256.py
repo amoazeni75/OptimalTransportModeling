@@ -34,20 +34,16 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 SEED = 9999
 torch.manual_seed(SEED)
-# path_A = "/home/samp8/projects/datasets/NCD_TrainA/"
-# path_B = "/home/samp8/projects/datasets/NCD_TrainB/"
-# test_path = "/home/samp8/projects/datasets/NCD_Test_Ground_Truth_256_60/"
 
-path = "/home/samp8/projects/def-keli/data/NCD_OTM/"
-output_path = '/home/samp8/scratch/OTM/NCD/NCD_colorization_256x256_images/'
-pretrain_path = '/home/samp8/scratch/OTM/NCD/NCD_colorization_256x256_checkpoints/'
-inception_path = '/home/samp8/scratch/OTM/NCD/NCD_colorization_256x256_inception/'
+# path = "/home/samp8/projects/def-keli/data/NCD_OTM/"
+# output_path = '/home/samp8/scratch/OTM/NCD/NCD_colorization_256x256_images/'
+# pretrain_path = '/home/samp8/scratch/OTM/NCD/NCD_colorization_256x256_checkpoints/'
+# inception_path = '/home/samp8/scratch/OTM/NCD/NCD_colorization_256x256_inception/'
 
-# path = "/home/samp8/projects/datasets/NCD_OTM/"
-# output_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_images/'
-# pretrain_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_checkpoints/'
-# inception_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_inception/'
-
+path = "/home/samp8/projects/datasets/NCD_OTM/"
+output_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_images/'
+pretrain_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_checkpoints/'
+inception_path = '/home/samp8/projects/OptimalTransportModeling/experiments/NCD/NCD_colorization_256x256_inception/'
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 cuda = True if torch.cuda.is_available() else False
