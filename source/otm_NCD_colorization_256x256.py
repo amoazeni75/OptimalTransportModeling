@@ -104,10 +104,10 @@ save_model = True  # saves weights of G and psi if true
 save_every = 5000  # save weights of G and psi
 log_every = 100  # print on console
 test_every = 1000  # save transport samples
-test_inception_every = 5000  # compute FID stats
+test_inception_every = 300  # compute FID stats
 # test_inception_every = 1
 
-num_inception_imgs = 50000  # number of images used to compute FID
+num_inception_imgs = 300  # number of images used to compute FID
 
 sigma = 0.3  # noise standard deviation
 
