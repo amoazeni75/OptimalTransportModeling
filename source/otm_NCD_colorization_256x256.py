@@ -626,11 +626,11 @@ if train_model:
                nrow=8, normalize=True)
     print('Extended fake sample saved successfully!!!')
 
-    save_image(Y.view(64, channels, size, size), output_path + 'inpaint_sample_extnd_epoch_' + str(epoch) + '.pdf',
+    save_image(Y.view(60, channels, size, size), output_path + 'inpaint_sample_extnd_epoch_' + str(epoch) + '.pdf',
                nrow=8, normalize=True)
     print('Extended inpainting sample saved successfully!!!')
 
-    save_image(X.view(64, channels, size, size), output_path + 'real_sample_extnd_epoch_' + str(epoch) + '.pdf', nrow=8,
+    save_image(X.view(60, channels, size, size), output_path + 'real_sample_extnd_epoch_' + str(epoch) + '.pdf', nrow=8,
                normalize=True)
     print('Extended real sample saved successfully!!!')
 
