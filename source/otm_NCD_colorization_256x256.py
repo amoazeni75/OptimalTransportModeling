@@ -101,9 +101,9 @@ beta2G = 0.9
 
 parallel = True  # Data parallelization, if multiple gpus are available
 save_model = True  # saves weights of G and psi if true
-save_every = 5000  # save weights of G and psi
+save_every = 500  # save weights of G and psi
 log_every = 100  # print on console
-test_every = 1000  # save transport samples
+test_every = 500  # save transport samples
 test_inception_every = 300  # compute FID stats
 # test_inception_every = 1
 
